@@ -13,7 +13,7 @@ const ContactsContainer = () => {
     totalContacts,
     numOfPages,
     search,
-    searchStatus,
+    searchRelation,
     searchType,
     sort,
   } = useSelector((store) => store.allContacts);
@@ -21,7 +21,7 @@ const ContactsContainer = () => {
 
   useEffect(() => {
     dispatch(getAllContacts());
-  }, [page, search, searchStatus, searchType, sort]);
+  }, [page, search, searchRelation, searchType, sort]);
 
   if (isLoading) {
     return <Loading />;

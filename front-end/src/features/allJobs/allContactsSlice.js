@@ -34,6 +34,7 @@ const allContactsSlice = createSlice({
       state.isLoading = false;
     },
     handleChange: (state, { payload: { name, value } }) => {
+      console.log(name, value);
       state.page = 1;
       state[name] = value;
     },
@@ -55,7 +56,7 @@ const allContactsSlice = createSlice({
         state.isLoading = false;
         state.contacts = payload.contacts;
         state.numOfPages = payload.numOfPages;
-        state.totalContacts = payload.count;
+        state.totalContacts = payload.totalContacts;
       })
       .addCase(getAllContacts.rejected, (state, { payload }) => {
         state.isLoading = false;

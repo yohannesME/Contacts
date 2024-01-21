@@ -1,7 +1,7 @@
 import { FormRow, FormRowSelect } from ".";
 import Wrapper from "../assets/wrappers/SearchContainer";
 import { useSelector, useDispatch } from "react-redux";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import {
   clearFilters,
   handleChange,
@@ -10,7 +10,7 @@ import {
 const SearchContainer = () => {
   const [localSearch, setLocalSearch] = useState("");
 
-  const { isLoading, search, searchRelation, searchType, sort, sortOptions } =
+  const { isLoading, search, searchRelation,  sort, sortOptions } =
     useSelector((store) => store.allContacts);
 
   const { relationOption } = useSelector((store) => store.contact);
@@ -32,6 +32,7 @@ const SearchContainer = () => {
     };
   };
   const optimizedDebounce = useMemo(() => debounce(), []);
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -71,7 +72,7 @@ const SearchContainer = () => {
           {/* sort */}
           <FormRowSelect
             name="sort"
-            value={sort}
+            value={searchRelation}
             handleChange={handleSearch}
             list={sortOptions}
           />

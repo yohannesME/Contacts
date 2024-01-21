@@ -21,8 +21,6 @@ const Contact = ({
 }) => {
   const dispatch = useDispatch();
 
-  console.log(email);
-
   const date = moment(createdAt).format("MMM Do, YYYY");
 
   return (

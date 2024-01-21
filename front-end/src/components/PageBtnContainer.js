@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { changePage } from "../features/allJobs/allContactsSlice";
 
 const PageBtnContainer = () => {
-  const { numOfPages, page } = useSelector((store) => store.allJobs);
+  const { numOfPages, page } = useSelector((store) => store.allContacts);
   const dispatch = useDispatch();
 
   const pages = Array.from({ length: numOfPages }, (_, index) => {
