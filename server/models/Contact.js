@@ -33,6 +33,13 @@ const ContactSchema = new mongoose.Schema(
         message: "Please provide a valide Phone Number",
       },
     },
+    email: {
+      type: String,
+      validate: {
+        validator: validator.isEmail,
+        message: "Please provide a valid Email Addreses",
+      },
+    },
     createdBy: {
       type: mongoose.Types.ObjectId,
       ref: "User",

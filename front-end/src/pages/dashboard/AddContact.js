@@ -24,7 +24,6 @@ const Addcontact = () => {
     editContactId,
   } = useSelector((store) => store.contact);
 
-
   const { user } = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const handleSubmit = (e) => {

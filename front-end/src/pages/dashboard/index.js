@@ -1,7 +1,7 @@
-import AddJob from './AddContact';
-import AllJobs from './AllJobs';
+import AddContact from './AddContact';
+import AllContacts from './AllContacts';
 import Profile from './Profile';
 import SharedLayout from './SharedLayout';
 import Stats from './Stats';
 
-export { Profile, AddJob, AllJobs, Stats, SharedLayout };
+export { Profile, AddContact, AllContacts, Stats, SharedLayout };

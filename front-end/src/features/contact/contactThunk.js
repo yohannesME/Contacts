@@ -28,6 +28,7 @@ export const deleteContactThunk = async (contactId, thunkAPI) => {
 };
 export const editContactThunk = async ({ contactId, contact }, thunkAPI) => {
   try {
+    console.log(contactId, contact);
     const resp = await customFetch.patch(`/contacts/${contactId}`, contact);
     thunkAPI.dispatch(clearValues());
     return resp.data;

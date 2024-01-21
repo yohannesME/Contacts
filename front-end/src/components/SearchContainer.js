@@ -1,19 +1,19 @@
 import { FormRow, FormRowSelect } from ".";
 import Wrapper from "../assets/wrappers/SearchContainer";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  handleChange,
-  clearFilters,
-} from "../features/allJobs/allContactsSlice";
 import { useState, useMemo } from "react";
+import {
+  clearFilters,
+  handleChange,
+} from "../features/allJobs/allContactsSlice";
 
 const SearchContainer = () => {
   const [localSearch, setLocalSearch] = useState("");
 
-  const { isLoading, search, searchStatus, searchType, sort, sortOptions } =
-    useSelector((store) => store.allJobs);
+  const { isLoading, search, searchRelation, searchType, sort, sortOptions } =
+    useSelector((store) => store.allContacts);
 
-  const { jobTypeOptions, statusOptions } = useSelector((store) => store.job);
+  const { relationOption } = useSelector((store) => store.contact);
 
   const dispatch = useDispatch();
 
@@ -51,23 +51,23 @@ const SearchContainer = () => {
             value={localSearch}
             handleChange={optimizedDebounce}
           />
-          {/* search by status */}
+          {/* search by relation */}
           <FormRowSelect
-            labelText="status"
-            name="searchStatus"
-            value={searchStatus}
+            labelText="relation"
+            name="searchRelation"
+            value={searchRelation}
             handleChange={handleSearch}
-            list={["all", ...statusOptions]}
+            list={["all", ...relationOption]}
           />
 
           {/* search by type*/}
-          <FormRowSelect
+          {/* <FormRowSelect
             labelText="type"
             name="searchType"
             value={searchType}
             handleChange={handleSearch}
-            list={["all", ...jobTypeOptions]}
-          />
+            list={["all", ...contactTypeOptions]}
+          /> */}
           {/* sort */}
           <FormRowSelect
             name="sort"

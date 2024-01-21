@@ -36,7 +36,7 @@ html {
   --grey-800: #243b53;
   --grey-900: #102a43;
   /* rest of the colors */
-  --black: #222;
+  -relation-black: #222;
   --white: #fff;
   --red-light: #f8d7da;
   --red-dark: #842029;

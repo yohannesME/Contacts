@@ -5,12 +5,12 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
   Profile,
-  AddJob,
-  AllJobs,
   Stats,
   SharedLayout,
 } from "./pages/dashboard";
 import VerifyPage from "./pages/Verify";
+import AllContacts from "./pages/dashboard/AllContacts";
+import Addcontact from "./pages/dashboard/AddContact";
 function App() {
   return (
     <BrowserRouter>
@@ -24,8 +24,8 @@ function App() {
           }
         >
           <Route index element={<Stats />} />
-          <Route path="all-jobs" element={<AllJobs />} />
-          <Route path="add-job" element={<AddJob />} />
+          <Route path="all-contacts" element={<AllContacts />} />
+          <Route path="add-contact" element={<Addcontact />} />
           <Route path="profile" element={<Profile />} />
         </Route>
         <Route path="landing" element={<Landing />} />

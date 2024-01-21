@@ -4,8 +4,7 @@ import { getAllContactsThunk, showStatsThunk } from './allContactsThunk';
 
 const initialFiltersState = {
   search: '',
-  searchStatus: 'all',
-  searchType: 'all',
+  searchRelation: 'all',
   sort: 'latest',
   sortOptions: ['latest', 'oldest', 'a-z', 'z-a'],
 };
@@ -17,7 +16,6 @@ const initialState = {
   numOfPages: 1,
   page: 1,
   stats: {},
-  monthlyApplications: [],
   ...initialFiltersState,
 };
 
@@ -53,10 +51,11 @@ const allContactsSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(getAllContacts.fulfilled, (state, { payload }) => {
+        console.log(payload);
         state.isLoading = false;
         state.contacts = payload.contacts;
         state.numOfPages = payload.numOfPages;
-        state.totalContacts = payload.totalcontacts;
+        state.totalContacts = payload.count;
       })
       .addCase(getAllContacts.rejected, (state, { payload }) => {
         state.isLoading = false;

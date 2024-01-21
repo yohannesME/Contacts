@@ -36,7 +36,7 @@ const updateContact = async (req, res) => {
     user: { userId },
     params: { id: contactId },
   } = req;
-
+  console.log(name, relation, userId, req.body);
   if (name === "" || relation === "") {
     throw new BadRequestError("name or relation fields cannot be empty");
   }

@@ -6,6 +6,6 @@ export const store = configureStore({
   reducer: {
     user: userSlice,
     contact: contactSlice,
-    allJobs: allContactsSlice,
+    allContacts : allContactsSlice,
   },
 });
