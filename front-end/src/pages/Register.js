@@ -4,7 +4,7 @@ import Wrapper from "../assets/wrappers/RegisterPage";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser, registerUser } from "../features/user/userSlice";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const initialState = {
   name: "",
@@ -98,6 +98,11 @@ function Register() {
           <button type="button" onClick={toggleMember} className="member-btn">
             {values.isMember ? "Register" : "Login"}
           </button>
+        </p>
+        <p>
+          <NavLink to="/forget-password" type="button" className="member-btn">
+            {values.isMember ? "forget password?" : ""}
+          </NavLink>
         </p>
       </form>
     </Wrapper>

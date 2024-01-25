@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link  } from "react-router-dom";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { verifyEmail } from "../features/user/userSlice";
@@ -43,6 +43,7 @@ const VerifyPage = () => {
           <Link to="/register" className="btn">
             Please login
           </Link>
+          
         </div>
       </div>
     </Wrapper>

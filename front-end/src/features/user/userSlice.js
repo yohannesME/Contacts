@@ -12,6 +12,9 @@ import {
   clearStoreThunk,
   verifyEmailThunk,
   getCurrentUserThunk,
+  forgetPasswordThunk,
+  ResetPasswordThunk,
+  logoutThunk,
 } from "./userThunk";
 
 export const currentUser = createAsyncThunk("user/showMe", async () => {
@@ -21,6 +24,8 @@ export const currentUser = createAsyncThunk("user/showMe", async () => {
 const initialState = {
   isLoading: false,
   isSidebarOpen: false,
+  emailExist: false,
+  passwordReseted: false,
   user: getUserFromLocalStorage(),
 };
 
@@ -38,6 +43,19 @@ export const verifyEmail = createAsyncThunk(
   }
 );
 
+export const ForgetPassword = createAsyncThunk(
+  "user/forgot-password",
+  async (payload, thunkAPI) => {
+    return forgetPasswordThunk("/auth/forgot-password", payload);
+  }
+);
+
+export const ResetPassword = createAsyncThunk(
+  "user/reset-password",
+  async (payload, thunkAPI) => {
+    return ResetPasswordThunk("/auth/reset-password", payload);
+  }
+);
 export const loginUser = createAsyncThunk(
   "user/loginUser",
   async (user, thunkAPI) => {
@@ -51,6 +69,11 @@ export const updateUser = createAsyncThunk(
     return updateUserThunk("/users/updateUser", user, thunkAPI);
   }
 );
+
+export const logout = createAsyncThunk('user/logout', async(user, thunkAPI) => {
+  return logoutThunk("auth/logout")
+})
+
 export const clearStore = createAsyncThunk("user/clearStore", clearStoreThunk);
 const userSlice = createSlice({
   name: "user",
@@ -62,6 +85,7 @@ const userSlice = createSlice({
     logoutUser: (state, { payload }) => {
       state.user = null;
       state.isSidebarOpen = false;
+      logout()
       removeUserFromLocalStorage();
       if (payload) {
         toast.success(payload);
@@ -77,7 +101,7 @@ const userSlice = createSlice({
       .addCase(registerUser.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(registerUser.fulfilled,  (state, { payload }) => {
+      .addCase(registerUser.fulfilled, (state, { payload }) => {
         const { msg } = payload;
         state.isLoading = false;
 
@@ -122,6 +146,21 @@ const userSlice = createSlice({
       })
       .addCase(clearStore.rejected, () => {
         toast.error("There was an error..");
+      })
+      .addCase(ForgetPassword.fulfilled, (state, { payload }) => {
+        const { msg } = payload;
+        toast.success(msg);
+      })
+      .addCase(ForgetPassword.rejected, (state, { payload }) => {
+        toast.error("No Account Found.");
+      })
+      .addCase(ResetPassword.rejected, (state, { payload }) => {
+        const { msg } = payload;
+        toast.error(msg);
+      })
+      .addCase(ResetPassword.fulfilled, (state, { payload }) => {
+        const { msg } = payload;
+        toast.success(msg);
       });
   },
 });

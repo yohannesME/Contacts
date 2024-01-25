@@ -41,8 +41,8 @@ const ContactsContainer = () => {
         {totalContacts} contact{contacts.length > 1 && "s"} found
       </h5>
       <div className="contacts">
-        {contacts.map((job) => {
-          return <Contact key={contacts._id} {...job} />;
+        {contacts.map((contact) => {
+          return <Contact key={contact._id} {...contact} />;
         })}
       </div>
       {numOfPages > 1 && <PageBtnContainer />}

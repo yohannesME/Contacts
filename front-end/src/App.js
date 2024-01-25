@@ -9,6 +9,7 @@ import {
   SharedLayout,
 } from "./pages/dashboard";
 import VerifyPage from "./pages/Verify";
+import ForgetPassword from "./pages/ForgetPassword";
 import AllContacts from "./pages/dashboard/AllContacts";
 import Addcontact from "./pages/dashboard/AddContact";
 function App() {
@@ -31,6 +32,8 @@ function App() {
         <Route path="landing" element={<Landing />} />
         <Route path="register" element={<Register />} />
         <Route path="/user/verify-email" element={<VerifyPage />} />
+        <Route path="/forget-password" element={<ForgetPassword />} />
+        
         <Route path="*" element={<Error />} />
       </Routes>
       <ToastContainer position="top-center" />

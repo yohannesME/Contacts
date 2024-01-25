@@ -137,6 +137,7 @@ const logout = async (req, res) => {
 
 const forgotPassword = async (req, res) => {
   const { email } = req.body;
+  console.log(req.body);
   if (!email) {
     throw new CustomError.BadRequestError("Please provide valid email");
   }
