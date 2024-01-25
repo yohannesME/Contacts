@@ -188,7 +188,7 @@ const resetPassword = async (req, res) => {
     }
   }
 
-  res.send("reset password");
+  res.status(StatusCodes.OK).json({ msg: "Password Reseted Successfully." });
 };
 
 module.exports = {

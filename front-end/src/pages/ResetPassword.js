@@ -1,67 +1,88 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation} from 'react-router-dom';
-import styled from 'styled-components';
-import { toast } from 'react-toastify';
+import { useLocation } from "react-router-dom";
+import styled from "styled-components";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { ResetPassword } from '../features/user/userSlice';
-import { FormRow } from '../components';
+import { ResetPassword } from "../features/user/userSlice";
+import { FormRow } from "../components";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
-const ResetPasswordForm = () => {
-  const [password, setPassword] = useState('');
+const intialPassword = {
+  password: "",
+  comfirmPassword: "",
+};
 
-  const { isLoading , passwordReseted } = useSelector((store) => store.user);
+const ResetPasswordForm = () => {
+  const [password, setPassword] = useState(intialPassword);
+
+  const { isLoading, passwordReseted } = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const query = useQuery();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const handleChange = async (e) => {
-    setPassword(e.target.value);
+  const handleChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setPassword({ ...password, [name]: value });
   };
 
-  useEffect(()=>{
-    if(passwordReseted){
+  useEffect(() => {
+    if (passwordReseted) {
       setTimeout(() => {
-        navigate("/register")
+        navigate("/register");
       }, 1000);
     }
-
-  }, [passwordReseted])
+  }, [passwordReseted]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!password) {
-      toast.error('Please Provide Password.')
+    if (!password.password) {
+      toast.error("Please Provide Password.");
       return;
     }
-    
-    dispatch(ResetPassword({email: query.get('email'), token: query.get('token'), password}))
+
+    if (password.password !== password.comfirmPassword) {
+      toast.error("Password Does not Match.");
+      return;
+    }
+
+    dispatch(
+      ResetPassword({
+        email: query.get("email"),
+        token: query.get("token"),
+        password: password.password,
+      })
+    );
   };
   return (
-    <Wrapper className='page'>
-      { (
+    <Wrapper className="page">
+      {
         <form
-          className={isLoading ? 'form form-loading' : 'form'}
+          className={isLoading ? "form form-loading" : "form"}
           onSubmit={handleSubmit}
         >
           <h4>reset password</h4>
-          {/* single form row */}
           <FormRow
-            type='password'
-            name='password'
-            value={password}
+            type="password"
+            name="password"
+            value={password.password}
             handleChange={handleChange}
           />
-          {/* end of single form row */}
-          <button type='submit' className='btn btn-block' disabled={isLoading}>
-            {isLoading ? 'Please Wait...' : 'New Password'}
+          <FormRow
+            type="password"
+            name="comfirmPassword"
+            value={password.comfirmPassword}
+            handleChange={handleChange}
+          />
+          <button type="submit" className="btn btn-block" disabled={isLoading}>
+            {isLoading ? "Please Wait..." : "New Password"}
           </button>
         </form>
-      )}
+      }
     </Wrapper>
   );
 };

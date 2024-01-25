@@ -3,15 +3,12 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Landing, Error, Register, ProtectedRoute } from "./pages";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {
-  Profile,
-  Stats,
-  SharedLayout,
-} from "./pages/dashboard";
+import { Profile, Stats, SharedLayout } from "./pages/dashboard";
 import VerifyPage from "./pages/Verify";
 import ForgetPassword from "./pages/ForgetPassword";
 import AllContacts from "./pages/dashboard/AllContacts";
 import Addcontact from "./pages/dashboard/AddContact";
+import ResetPasswordForm from "./pages/ResetPassword";
 function App() {
   return (
     <BrowserRouter>
@@ -33,7 +30,8 @@ function App() {
         <Route path="register" element={<Register />} />
         <Route path="/user/verify-email" element={<VerifyPage />} />
         <Route path="/forget-password" element={<ForgetPassword />} />
-        
+        <Route path="/user/reset-password" element={<ResetPasswordForm />} />
+
         <Route path="*" element={<Error />} />
       </Routes>
       <ToastContainer position="top-center" />

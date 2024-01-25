@@ -70,9 +70,12 @@ export const updateUser = createAsyncThunk(
   }
 );
 
-export const logout = createAsyncThunk('user/logout', async(user, thunkAPI) => {
-  return logoutThunk("auth/logout")
-})
+export const logout = createAsyncThunk(
+  "user/logout",
+  async (user, thunkAPI) => {
+    return logoutThunk("auth/logout");
+  }
+);
 
 export const clearStore = createAsyncThunk("user/clearStore", clearStoreThunk);
 const userSlice = createSlice({
@@ -85,7 +88,7 @@ const userSlice = createSlice({
     logoutUser: (state, { payload }) => {
       state.user = null;
       state.isSidebarOpen = false;
-      logout()
+      logout();
       removeUserFromLocalStorage();
       if (payload) {
         toast.success(payload);
@@ -147,19 +150,31 @@ const userSlice = createSlice({
       .addCase(clearStore.rejected, () => {
         toast.error("There was an error..");
       })
+      .addCase(ForgetPassword.pending, (state, { payload }) => {
+        state.isLoading = true;
+      })
       .addCase(ForgetPassword.fulfilled, (state, { payload }) => {
         const { msg } = payload;
+        state.emailExist = true;
+        state.isLoading = false;
         toast.success(msg);
       })
       .addCase(ForgetPassword.rejected, (state, { payload }) => {
         toast.error("No Account Found.");
+        state.isLoading = false;
       })
       .addCase(ResetPassword.rejected, (state, { payload }) => {
         const { msg } = payload;
+        state.isLoading = false;
         toast.error(msg);
+      })
+      .addCase(ResetPassword.pending, (state, { payload }) => {
+        state.isLoading = true;
       })
       .addCase(ResetPassword.fulfilled, (state, { payload }) => {
         const { msg } = payload;
+        state.isLoading = false;
+        state.passwordReseted = true;
         toast.success(msg);
       });
   },
