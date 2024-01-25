@@ -11,6 +11,9 @@ const {
 } = require("../utils");
 const crypto = require("crypto");
 
+const origin = "http://localhost:3000";
+
+
 const register = async (req, res) => {
   const { email, name, password } = req.body;
 
@@ -32,7 +35,6 @@ const register = async (req, res) => {
     role,
     verificationToken,
   });
-  const origin = "http://localhost:3000";
   // const newOrigin = 'https://react-node-user-workflow-front-end.netlify.app';
 
   // const tempOrigin = req.get('origin');
@@ -90,6 +92,13 @@ const login = async (req, res) => {
     throw new CustomError.UnauthenticatedError("Invalid Credentials");
   }
   if (!user.isVerified) {
+    
+    await sendVerificationEmail({
+      name: user.name,
+      email: user.email,
+      verificationToken: user.verificationToken,
+      origin,
+    });
     throw new CustomError.UnauthenticatedError("Please verify your email");
   }
   const tokenUser = createTokenUser(user);

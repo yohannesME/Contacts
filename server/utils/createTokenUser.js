@@ -6,6 +6,7 @@ const createTokenUser = (user) => {
     location: user.location,
     phoneNumber: user.phoneNumber,
     email: user.email,
+    role: user.role,
   };
 };
 

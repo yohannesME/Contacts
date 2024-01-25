@@ -4,7 +4,7 @@ import Wrapper from '../assets/wrappers/StatsContainer';
 import { useSelector } from 'react-redux';
 
 const StatsContainer = () => {
-  const { stats } = useSelector((store) => store.allJobs);
+  const { stats } = useSelector((store) => store.allContacts);
 
   const defaultStats = [
     {

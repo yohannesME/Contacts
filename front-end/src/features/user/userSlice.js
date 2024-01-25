@@ -123,7 +123,7 @@ const userSlice = createSlice({
         const { user } = payload;
         state.isLoading = false;
         state.user = user;
-        // console.log(user);
+        console.log(user);
         addUserToLocalStorage(user);
 
         toast.success(`Welcome Back ${user.name}`);
