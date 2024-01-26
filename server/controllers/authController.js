@@ -8,11 +8,12 @@ const {
   sendVerificationEmail,
   sendResetPasswordEmail,
   createHash,
+  createRandomOTP,
+  sendOTPEmail,
 } = require("../utils");
 const crypto = require("crypto");
 
 const origin = "http://localhost:3000";
-
 
 const register = async (req, res) => {
   const { email, name, password } = req.body;
@@ -91,8 +92,8 @@ const login = async (req, res) => {
   if (!isPasswordCorrect) {
     throw new CustomError.UnauthenticatedError("Invalid Credentials");
   }
+
   if (!user.isVerified) {
-    
     await sendVerificationEmail({
       name: user.name,
       email: user.email,
@@ -101,35 +102,67 @@ const login = async (req, res) => {
     });
     throw new CustomError.UnauthenticatedError("Please verify your email");
   }
-  const tokenUser = createTokenUser(user);
 
-  // create refresh token
-  let refreshToken = "";
-  // check for existing token
-  const existingToken = await Token.findOne({ user: user._id });
+  const OTPString = createRandomOTP();
 
-  if (existingToken) {
-    const { isValid } = existingToken;
-    if (!isValid) {
-      throw new CustomError.UnauthenticatedError("Invalid Credentials");
+  user.OTP = OTPString;
+  await user.save();
+
+  await sendOTPEmail({
+    name: user.name,
+    email: user.email,
+    OTP: OTPString,
+    origin,
+  });
+
+  res.status(StatusCodes.OK).json({ email });
+};
+
+const OTP = async (req, res) => {
+  const { email, OTPassword } = req.body;
+
+  if (!email || !OTPassword) {
+    throw new CustomError.BadRequestError("Email and OTP that Found.");
+  }
+  const user = await User.findOne({ email });
+
+  if (user) {
+    console.log(user.password, user.OTP);
+    const isCorrect = await user.comparePassword(OTPassword, true);
+
+    if (!isCorrect)
+      throw new CustomError.UnauthenticatedError("Invalid Credential");
+
+    const tokenUser = createTokenUser(user);
+
+    // create refresh token
+    let refreshToken = "";
+    // check for existing token
+    const existingToken = await Token.findOne({ user: user._id });
+
+    if (existingToken) {
+      const { isValid } = existingToken;
+      if (!isValid) {
+        throw new CustomError.UnauthenticatedError("Invalid Credentials");
+      }
+      refreshToken = existingToken.refreshToken;
+      attachCookiesToResponse({ res, user: tokenUser, refreshToken });
+      res.status(StatusCodes.OK).json({ user: tokenUser });
+      return;
     }
-    console.log("passed the authentication", res);
-    refreshToken = existingToken.refreshToken;
+
+    refreshToken = crypto.randomBytes(40).toString("hex");
+    const userAgent = req.headers["user-agent"];
+    const ip = req.ip;
+    const userToken = { refreshToken, ip, userAgent, user: user._id };
+
+    await Token.create(userToken);
+
     attachCookiesToResponse({ res, user: tokenUser, refreshToken });
     res.status(StatusCodes.OK).json({ user: tokenUser });
-    return;
   }
-
-  refreshToken = crypto.randomBytes(40).toString("hex");
-  const userAgent = req.headers["user-agent"];
-  const ip = req.ip;
-  const userToken = { refreshToken, ip, userAgent, user: user._id };
-
-  await Token.create(userToken);
-
-  attachCookiesToResponse({ res, user: tokenUser, refreshToken });
-  res.status(StatusCodes.OK).json({ user: tokenUser });
 };
+
 const logout = async (req, res) => {
   await Token.findOneAndDelete({ user: req.user.userId });
 
@@ -146,7 +179,6 @@ const logout = async (req, res) => {
 
 const forgotPassword = async (req, res) => {
   const { email } = req.body;
-  console.log(req.body);
   if (!email) {
     throw new CustomError.BadRequestError("Please provide valid email");
   }
@@ -207,4 +239,5 @@ module.exports = {
   verifyEmail,
   forgotPassword,
   resetPassword,
+  OTP,
 };

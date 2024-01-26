@@ -9,6 +9,7 @@ import ForgetPassword from "./pages/ForgetPassword";
 import AllContacts from "./pages/dashboard/AllContacts";
 import Addcontact from "./pages/dashboard/AddContact";
 import ResetPasswordForm from "./pages/ResetPassword";
+import OTPPage from "./pages/OTPPage";
 function App() {
   return (
     <BrowserRouter>
@@ -31,6 +32,8 @@ function App() {
         <Route path="/user/verify-email" element={<VerifyPage />} />
         <Route path="/forget-password" element={<ForgetPassword />} />
         <Route path="/user/reset-password" element={<ResetPasswordForm />} />
+        <Route path="/user/OTP" element={<OTPPage />} />
+
 
         <Route path="*" element={<Error />} />
       </Routes>

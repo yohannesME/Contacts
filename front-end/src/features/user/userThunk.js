@@ -31,6 +31,15 @@ export const verifyEmailThunk = async (url, payload, thunkAPI) => {
   }
 };
 
+export const OneTimePasswordThunk = async (url, payload, thunkAPI) => {
+  try {
+    const resp = await customFetch.post(url, payload);
+    return resp.data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data.msg);
+  }
+};
+
 export const forgetPasswordThunk = async (url, payload, thunkAPI) => {
   try {
     const resp = await customFetch.post(url, payload);

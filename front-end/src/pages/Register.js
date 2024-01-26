@@ -15,7 +15,8 @@ const initialState = {
 
 function Register() {
   const [values, setValues] = useState(initialState);
-  const { user, isLoading } = useSelector((store) => store.user);
+  const { isLoginingIn, email, isLoading } = useSelector((store) => store.user);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -40,16 +41,17 @@ function Register() {
     setValues({ ...values, isMember: true });
   };
 
+  useEffect(() => {
+    if (isLoginingIn) {
+      setTimeout(() => {
+        navigate(`/user/OTP?${new URLSearchParams({ email }).toString()}`);
+      }, 500);
+    }
+  }, [isLoginingIn]);
+
   const toggleMember = () => {
     setValues({ ...values, isMember: !values.isMember });
   };
-  useEffect(() => {
-    if (user) {
-      setTimeout(() => {
-        navigate("/");
-      }, 1000);
-    }
-  }, [user]);
   return (
     <Wrapper className="full-page">
       <form className="form" onSubmit={onSubmit}>

@@ -15,6 +15,7 @@ import {
   forgetPasswordThunk,
   ResetPasswordThunk,
   logoutThunk,
+  OneTimePasswordThunk,
 } from "./userThunk";
 
 export const currentUser = createAsyncThunk("user/showMe", async () => {
@@ -25,6 +26,8 @@ const initialState = {
   isLoading: false,
   isSidebarOpen: false,
   emailExist: false,
+  email: "",
+  isLoginingIn: false,
   passwordReseted: false,
   user: getUserFromLocalStorage(),
 };
@@ -40,6 +43,13 @@ export const verifyEmail = createAsyncThunk(
   "user/verifyEmail",
   async (payload, thunkAPI) => {
     return verifyEmailThunk("/auth/verify-email", payload);
+  }
+);
+
+export const OneTimePassword = createAsyncThunk(
+  "user/OTP",
+  async (payload, thunkAPI) => {
+    return OneTimePasswordThunk("/auth/OTP", payload);
   }
 );
 
@@ -88,7 +98,6 @@ const userSlice = createSlice({
     logoutUser: (state, { payload }) => {
       state.user = null;
       state.isSidebarOpen = false;
-      logout();
       removeUserFromLocalStorage();
       if (payload) {
         toast.success(payload);
@@ -98,7 +107,6 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(currentUser.fulfilled, (state, action) => {
-        // console.log(action);
         state.user = action.payload;
       })
       .addCase(registerUser.pending, (state) => {
@@ -107,9 +115,6 @@ const userSlice = createSlice({
       .addCase(registerUser.fulfilled, (state, { payload }) => {
         const { msg } = payload;
         state.isLoading = false;
-
-        // state.user = currentUser();
-        // addUserToLocalStorage(user);
         toast.success(`${msg}`);
       })
       .addCase(registerUser.rejected, (state, { payload }) => {
@@ -120,17 +125,31 @@ const userSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(loginUser.fulfilled, (state, { payload }) => {
-        const { user } = payload;
+        const { email } = payload;
         state.isLoading = false;
-        state.user = user;
-        console.log(user);
-        addUserToLocalStorage(user);
-
-        toast.success(`Welcome Back ${user.name}`);
+        state.isLoginingIn = true;
+        state.email = email;
       })
       .addCase(loginUser.rejected, (state, { payload }) => {
         state.isLoading = false;
         toast.error(payload);
+      })
+      .addCase(OneTimePassword.fulfilled, (state, { payload }) => {
+        const { user } = payload;
+        state.user = user;
+        addUserToLocalStorage(user);
+        toast.success(`Welcome Back ${user.name}`);
+        state.isLoading = false;
+      })
+      .addCase(OneTimePassword.pending, (state, { payload }) => {
+        state.isLoading = true;
+      })
+      .addCase(OneTimePassword.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.isLoginingIn = false;
+        console.log(payload)
+        // const { msg } = payload;
+        // toast.error(msg);
       })
       .addCase(updateUser.pending, (state) => {
         state.isLoading = true;
