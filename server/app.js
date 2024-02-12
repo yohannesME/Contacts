@@ -24,6 +24,7 @@ const contactRouter = require("./routes/contactRoutes");
 const productRouter = require("./routes/productRoutes");
 const reviewRouter = require("./routes/reviewRoutes");
 const orderRouter = require("./routes/orderRoutes");
+const adminRouter = require("./routes/adminRoutes")
 
 // middleware
 const notFoundMiddleware = require("./middleware/not-found");
@@ -59,6 +60,7 @@ app.use("/api/v1/contacts", contactRouter);
 app.use("/api/v1/products", productRouter);
 app.use("/api/v1/reviews", reviewRouter);
 app.use("/api/v1/orders", orderRouter);
+app.use("/api/v1/stats", adminRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);

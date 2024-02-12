@@ -1,7 +1,7 @@
-import customFetch, { checkForUnauthorizedResponse } from '../../utils/axios';
+import customFetch, { checkForUnauthorizedResponse } from "../../utils/axios";
 
 export const getAllContactsThunk = async (_, thunkAPI) => {
-  const { page, search, searchRelation,  sort } =
+  const { page, search, searchRelation, sort } =
     thunkAPI.getState().allContacts;
   let url = `/contacts?relation=${searchRelation}&sort=${sort}&page=${page}`;
   if (search) {
@@ -17,7 +17,7 @@ export const getAllContactsThunk = async (_, thunkAPI) => {
 
 export const showStatsThunk = async (_, thunkAPI) => {
   try {
-    const resp = await customFetch.get('/contacts/stats');
+    const resp = await customFetch.get("/stats");
 
     return resp.data;
   } catch (error) {

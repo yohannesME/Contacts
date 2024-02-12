@@ -14,7 +14,7 @@ const Stats = () => {
   return (
     <>
       <StatsContainer />
-      {false && <ChartsContainer />}
+      {  <ChartsContainer />}
     </>
   );
 };
